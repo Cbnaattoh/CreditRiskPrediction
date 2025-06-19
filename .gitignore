@@ -1,0 +1,9 @@
+
+# Virtual environment
+venv/
+
+
+# Large files
+ml_model/data/raw/dataset.csv
+ml_model/data/processed/
+
