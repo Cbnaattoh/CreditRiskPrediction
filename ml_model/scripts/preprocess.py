@@ -4,7 +4,7 @@ from utils import clean_emp_length, get_preprocessor, get_feature_names
 import pickle
 
 # Load data
-df = pd.read_csv('C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/data/raw/dataset.csv', low_memory=False)
+df = pd.read_csv('ml_model/data/raw/dataset.csv', low_memory=False)
 
 # Print available columns for debugging
 print("Available columns in dataset:", df.columns.tolist())
@@ -78,7 +78,7 @@ max_score = df_scaled['credit_score'].max()
 df_scaled['credit_score'] = 300 + (df_scaled['credit_score'] - min_score) * (550 / (max_score - min_score))
 
 # Create output directory
-output_dir = 'C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/data/processed'
+output_dir = 'ml_model/data/processed'
 os.makedirs(output_dir, exist_ok=True)
 
 # Save output, including original features
@@ -91,5 +91,5 @@ print(df_final.head())
 print(f'Output file saved at: {output_file_path}')
 
 # Save preprocessor
-with open('C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/models/preprocessor.pkl', 'wb') as f:
+with open('ml_model/models/preprocessor.pkl', 'wb') as f:
     pickle.dump(preprocessor, f)

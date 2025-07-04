@@ -7,11 +7,11 @@ from utils import get_preprocessor, get_feature_names
 import os
 
 # Load preprocessed data
-data_path = 'C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/data/processed/credit_score.csv'
+data_path = 'ml_model/data/processed/credit_score.csv'
 df = pd.read_csv(data_path)
 
 # Load preprocessor
-with open('C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/models/preprocessor.pkl', 'rb') as f:
+with open('ml_model/models/preprocessor.pkl', 'rb') as f:
     preprocessor = pickle.load(f)
 
 # Define features and target (monetary values in GHC)
@@ -55,7 +55,7 @@ print(f'Mean Squared Error (Test Set): {mse:.2f}')
 print(f'R-squared (Test Set Accuracy): {r2:.4f}')
 
 # Save model and metrics
-output_dir = 'C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/models'
+output_dir = 'ml_model/models'
 os.makedirs(output_dir, exist_ok=True)
 model_path = f'{output_dir}/xgboost_credit_score_model.pkl'
 metrics_path = f'{output_dir}/model_metrics.pkl'
