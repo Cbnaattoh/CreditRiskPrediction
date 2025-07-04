@@ -11,9 +11,9 @@ st.set_page_config(page_title="Credit Risk Prediction - Demo", layout="centered"
 
 def load_model_and_preprocessor():
     """Load the trained model, preprocessor, and metrics."""
-    model_path = 'C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/models/xgboost_credit_score_model.pkl'
-    preprocessor_path = 'C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/models/preprocessor.pkl'
-    metrics_path = 'C:/Users/Lenovo-T15p/Desktop/CreditRiskPrediction/ml_model/models/model_metrics.pkl'
+    model_path = 'CreditRiskPrediction/ml_model/models/xgboost_credit_score_model.pkl'
+    preprocessor_path = 'CreditRiskPrediction/ml_model/models/preprocessor.pkl'
+    metrics_path = 'CreditRiskPrediction/ml_model/models/model_metrics.pkl'
     try:
         with open(model_path, 'rb') as model_file:
             model = pickle.load(model_file)
