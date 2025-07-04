@@ -70,38 +70,89 @@ def predict_credit_score(model, input_df):
         st.error(f"Error in prediction: {e}")
         return None
 
-def main():
-    # Title and description
+def info_page():
+    st.title("Credit Score Factors - Info")
+    st.markdown("""
+### 1. Annual Income (GHC) – Positive Impact  
+**Why it matters:** Higher income shows that you have a stronger ability to repay loans.  
+**Effect:** A higher annual income increases your credit score, as lenders view you as a lower-risk borrower.
+
+### 2. Debt-to-Income Ratio (%) – Negative Impact  
+**Formula:** Debt-to-Income Ratio = (Monthly Debt Payments / Monthly Income) × 100  
+**Why it matters:** A higher ratio suggests you are already burdened with debt, leaving little room to take on more responsibly.  
+**Effect:** A high DTI ratio lowers your score, signaling financial strain.
+
+### 3. Interest Rate (%) – Negative Impact  
+**Why it matters:** High-interest rates mean you’ll pay more in interest over time.  
+**Effect:** When someone consistently accepts loans with high interest, it may imply poor credit history or desperation, which lowers the credit score.
+
+### 4. Revolving Utilization Rate (%) – Negative Impact  
+**Definition:** Percentage of your credit card limit currently in use.  
+**Example:** If your limit is GHC 10,000 and you’re using GHC 8,000, your utilization is 80%.  
+**Why it matters:** High utilization suggests you're over-reliant on credit.  
+**Effect:** A high utilization rate lowers your score. Ideal is below 30%.
+
+### 5. Number of Delinquencies in Past 2 Years – Negative Impact  
+**Delinquency:** Late or missed payments on loans/credit.  
+**Why it matters:** A history of late payments indicates poor financial behavior.  
+**Effect:** More delinquencies significantly reduce your score.
+
+### 6. Number of Inquiries in Last 6 Months – Negative Impact  
+**Soft Inquiry:** Doesn’t affect score (e.g., background checks).  
+**Hard Inquiry:** Affects score (e.g., applying for a loan).  
+**Why it matters:** Too many hard inquiries may suggest you're financially unstable or credit-hungry.  
+**Effect:** More recent hard inquiries lower your score.
+
+### 7. Employment Length – Positive Impact  
+**Why it matters:** Stable employment implies steady income and reliability.  
+**Effect:** Longer employment improves your score, especially if you’ve stayed in one job or industry.
+
+### 8. Number of Open Accounts – Slight Positive Impact  
+**Why it matters:** Having multiple accounts (credit cards, loans) and managing them well shows good credit behavior.  
+**Effect:** More open accounts can slightly increase your score, as long as they’re in good standing.
+
+### 9. Collections in Past 12 Months (Excluding Medical) – Negative Impact  
+**Collections:** Debts handed over to collections agencies due to non-payment.  
+**Why it matters:** It shows severe financial mismanagement.  
+**Effect:** Non-medical collections sharply reduce your score. Medical collections are often treated more leniently.
+
+### 10. Loan Amount (GHC) – Slight Negative Impact  
+**Why it matters:** Large loans increase the lender’s risk.  
+**Effect:** Larger loan requests slightly lower your score, unless your income and credit history support it.
+
+### 11. Credit History Length (Years) – Positive Impact  
+**Why it matters:** A longer credit history provides more data to judge how responsibly you've handled credit.  
+**Effect:** The longer your history, especially with no negative marks, the higher your score.
+
+### 12. Maximum Balance on Bankcards (GHC) – Negative Impact  
+**Why it matters:** High balances can indicate over-borrowing.  
+**Effect:** High maximum balances on credit cards lower your score, especially if unpaid or nearing the limit.
+
+### 13. Total Number of Accounts – Positive Impact  
+**Why it matters:** A diversified credit profile (loans, credit cards, etc.) reflects financial experience.  
+**Effect:** A greater number of total accounts, when managed well, improves your score.
+
+### 14. Number of Revolving Accounts Opened in Last 12 Months – Positive Impact  
+**Why it matters:** Shows recent credit activity, and if managed well, indicates you're expanding your credit responsibly.  
+**Effect:** More revolving (credit card) accounts opened recently can slightly increase your score, if utilization is low and payments are on time.
+
+### 15. Number of Public Records – Negative Impact  
+**Public Records:** Include bankruptcies, court judgments, and tax liens.  
+**Why it matters:** These records imply serious financial troubles.  
+**Effect:** More public records drastically reduce your score.
+
+### 16. Home Ownership – Small Positive Impact  
+**Why it matters:** Homeowners or renters are viewed more positively than those with no permanent residence status ('None' or 'Other').  
+**Effect:** Owning a home or having a long-term rental can slightly increase your score by indicating stability.
+    """)
+
+def home_page():
     st.title("Credit Risk Prediction - Ghana")
     st.markdown("""
         Enter your financial details below to predict your credit score.
         All monetary values should be in Ghanaian Cedi (GHC).
-        Use the information section to understand how each input affects your score.
     """)
 
-    # Information section
-    with st.expander("How Inputs Affect Your Credit Score", expanded=False):
-        st.markdown("""
-            Below is an explanation of each input and its impact on your credit score:
-            - **Annual Income (GHC)**: Higher income increases your score (positive impact).
-            - **Debt-to-Income Ratio (%)**: Higher ratios decrease your score (negative impact).
-            - **Interest Rate (%)**: Higher rates decrease your score (negative impact).
-            - **Revolving Utilization Rate (%)**: Higher utilization decreases your score (negative impact).
-            - **Number of Delinquencies in Past 2 Years**: More delinquencies decrease your score (negative impact).
-            - **Number of Inquiries in Last 6 Months**: More inquiries decrease your score (negative impact).
-            - **Employment Length**: Longer employment increases your score (positive impact).
-            - **Number of Open Accounts**: More accounts slightly increase your score (positive impact).
-            - **Collections in Past 12 Months (excluding medical)**: More collections decrease your score (negative impact).
-            - **Loan Amount (GHC)**: Larger loans slightly decrease your score (negative impact).
-            - **Credit History Length (years)**: Longer history increases your score (positive impact).
-            - **Maximum Balance on Bankcards (GHC)**: Higher balances decrease your score (negative impact).
-            - **Total Number of Accounts**: More accounts increase your score (positive impact).
-            - **Number of Revolving Accounts Opened in Last 12 Months**: More accounts increase your score (positive impact).
-            - **Number of Public Records**: More records decrease your score (negative impact).
-            - **Home Ownership**: Owning or renting has a small positive impact compared to 'NONE' or 'OTHER'.
-        """)
-
-    # Define features
     features = [
         'annual_inc', 'dti', 'int_rate', 'revol_util', 'delinq_2yrs',
         'inq_last_6mths', 'emp_length', 'open_acc', 'collections_12_mths_ex_med',
@@ -109,16 +160,13 @@ def main():
         'open_rv_12m', 'pub_rec', 'home_ownership'
     ]
 
-    # Load model, preprocessor, and metrics
     model, preprocessor, metrics = load_model_and_preprocessor()
     if model is None or preprocessor is None:
         return
 
-    # Create a dummy DataFrame for preprocessor
     dummy_df = pd.DataFrame(columns=features)
     _, categorical_features = get_preprocessor(dummy_df, features)
 
-    # Input form
     with st.form("credit_score_form"):
         st.subheader("Enter Your Financial Details")
         col1, col2 = st.columns(2)
@@ -146,11 +194,9 @@ def main():
             else:
                 home_ownership = None
 
-        # Submit button
         submitted = st.form_submit_button("Predict Credit Score")
 
     if submitted:
-        # Validate inputs
         errors = []
         if not (5000 <= annual_inc <= 10000000):
             errors.append("Annual Income must be between 5,000 and 10,000,000 GHC.")
@@ -191,7 +237,6 @@ def main():
                 st.error(error)
             return
 
-        # Collect features
         user_features = {
             'annual_inc': annual_inc,
             'dti': dti,
@@ -212,21 +257,17 @@ def main():
         if home_ownership:
             user_features['home_ownership'] = home_ownership
 
-        # Preprocess input
         input_df = preprocess_input(user_features, preprocessor, features, categorical_features)
         if input_df is None:
             return
 
-        # Predict credit score
         credit_score = predict_credit_score(model, input_df)
         if credit_score is None:
             return
 
-        # Get credit score category and confidence level
         category = get_credit_score_category(credit_score)
         confidence_level = metrics['r2_score'] * 100
 
-        # Display results with conditional background
         st.subheader("Prediction Results")
         if credit_score < 580:
             st.markdown(
@@ -254,6 +295,15 @@ def main():
             st.success(f"**Predicted Credit Score**: {credit_score:.0f}")
             st.success(f"**Credit Score Category**: {category}")
             st.success(f"**Confidence Level**: {confidence_level:.2f}%")
+
+def main():
+    st.sidebar.title("Navigation")
+    page = st.sidebar.radio("Go to", ("Home", "Info"))
+
+    if page == "Home":
+        home_page()
+    elif page == "Info":
+        info_page()
 
 if __name__ == "__main__":
     main()
